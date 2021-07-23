@@ -1,0 +1,45 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: gtd-es-query-side
+  datasource:
+    password: root
+    url: jdbc:mysql://localhost:3306/testdb?createDatabaseIfNotExist=true
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+  kafka:
+    bootstrapServers: localhost:9092
+    consumer:
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      valueDeserializer: net.mguenther.gtd.kafka.serialization.StockEventDeserializer
+      autoOffsetReset: latest
+      enableAutoCommit: false
+      isolationLevel: READ_COMMITTED
+    listener:
+      ackMode: MANUAL
+gtd:
+  topic: topic-getting-things-done
+  groupId: getting-thigns-done-query
+management:
+  security:
+    enabled: false
+eureka:
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    register-with-eureka: true
+  instance:
+    appname: gtd-es-query-side
+    preferIpAddress: true

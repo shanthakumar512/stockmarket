@@ -1,0 +1,29 @@
+{
+    "namespace": "net.mguenther.gtd.kafka.serialization",
+    "type": "record",
+    "name": "AvroStockEvent",
+    "fields": [
+        {"name": "eventId", "type": "string"},
+        {"name": "timestamp", "type": "long"},
+        {"name": "data", "type": [
+
+            {
+                "name": "AvroStockCreated",
+                "type": "record",
+                "fields": [
+                    {"name": "comapnyCode", "type": "string"},
+                    {"name": "stockPrice",  "type": "string"}
+                ]
+            },
+
+            {
+                "name": "AvroStockDeleted",
+                "type": "record",
+                "fields": [
+                    {"name": "comapnyCode", "type": "string"}
+                ]
+            }
+        ]
+        }
+    ]
+}

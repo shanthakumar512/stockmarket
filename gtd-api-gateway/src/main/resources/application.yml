@@ -1,0 +1,70 @@
+server:
+  port: 8765
+
+management:
+  security:
+    enabled: false
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+eureka:
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    appname: gtd-es-api-gateway
+    preferIpAddress: true
+    lease-expiration-duration-in-seconds: 90
+    lease-renewal-interval-in-seconds: 30
+
+spring:
+  application:
+    name: gtd-es-api-gateway
+  cloud:
+    discovery:
+      enabled: true
+      client:
+        health-indicator:
+          enabled: true
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true
+     
+ribbon:
+    ConnectTimeout: 10000
+    ReadTimeout: 60000
+    
+zuul:
+    ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+    prefix: /api
+    ribbon:
+        eager-load:
+            enabled: true
+    routes:
+        loanInfo:
+            path: /company/**
+            serviceId: loan-information-service
+            stripPrefix: false
+        loanUser:
+            path: /loanUser/**
+            serviceId: user-information-service
+            stripPrefix: false
+        searchinfo:
+            path: /searchinfo/**
+            serviceId: search-service
+            stripPrefix: false
+    sensitiveHeaders: Cookie,Set-Cookie
+      
